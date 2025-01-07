@@ -1,8 +1,27 @@
+## Next.js Experimental
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+NodeJS version 22.12
+
+## Current Experiments
+
+- Implement example use of [SVAR React Gantt Chart](https://svar.dev/react/gantt/)
 
 ## Getting Started
 
-First, run the development server:
+You can run `storybook` by
+
+```bash
+npm run storybook
+```
+
+And build `static-storybook` for public deployment by
+```bash
+npm run build-storybook
+```
+
+Or, run the development server (mostly empty):
 
 ```bash
 npm run dev
