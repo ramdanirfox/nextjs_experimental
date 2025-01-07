@@ -8,6 +8,8 @@ NodeJS version 22.12
 
 - Implement example use of [SVAR React Gantt Chart](https://svar.dev/react/gantt/)
 
+![image](https://raw.githubusercontent.com/ramdanirfox/nextjs_experimental/refs/heads/main/public/images/splash.png)
+
 ## Getting Started
 
 You can run `storybook` by
