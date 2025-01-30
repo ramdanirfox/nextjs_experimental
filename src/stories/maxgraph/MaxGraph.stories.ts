@@ -16,14 +16,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Gantt1: Story = {
+export const Basic: Story = {
   args: {
-
+    mode: "basic"
   }
 };
 
 // More on interaction testing: https://storybook.js.org/docs/writing-tests/interaction-testing
-export const Gantt2: Story = {
+export const Codec: Story = {
   play: async ({ canvasElement }) => {
     // const canvas = within(canvasElement);
     // const loginButton = canvas.getByRole('button', { name: /Log in/i });
@@ -35,4 +35,24 @@ export const Gantt2: Story = {
     // await expect(logoutButton).toBeInTheDocument();
     await expect(true).toBeTruthy();
   },
+  args: {
+    mode: "codec"
+  }
+};
+
+export const Editor: Story = {
+  play: async ({ canvasElement }) => {
+    // const canvas = within(canvasElement);
+    // const loginButton = canvas.getByRole('button', { name: /Log in/i });
+    // await expect(loginButton).toBeInTheDocument();
+    // await userEvent.click(loginButton);
+    // await expect(loginButton).not.toBeInTheDocument();
+
+    // const logoutButton = canvas.getByRole('button', { name: /Log out/i });
+    // await expect(logoutButton).toBeInTheDocument();
+    await expect(true).toBeTruthy();
+  },
+  args: {
+    mode: "editor"
+  }
 };
