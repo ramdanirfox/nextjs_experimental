@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useRef } from 'react';
 import { type CellStyle, Graph, InternalEvent } from '@maxgraph/core';
 import { MaxGraphCodec } from './MaxGraph.codec';
+import { MaxGraphEditor } from './MaxGraph.editor';
 
 type User = {
   name: string;
@@ -78,7 +79,7 @@ export const MaxGraph: React.FC<MaxGraphProps> = ({
         return <article ref={myRef} className="h-[100vh] w-[100vh]">
               </article>;
       case 'editor':
-        return <div>Rejected.</div>;
+        return <MaxGraphEditor />;
       default:
         return <div>Unknown status.</div>;
     }

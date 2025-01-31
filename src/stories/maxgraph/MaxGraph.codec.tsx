@@ -36,16 +36,25 @@ export const MaxGraphCodec: React.FC<MaxGraphCodecProps> = ({
     `;
 
     const fnEncode = () => {
-        const sourceObject = {}; // your object
+        const sourceObject = graph.getDataModel(); // your object
         const encoder = new Codec();
         const node = encoder.encode(sourceObject);
         const encodedXml = xmlUtils.getPrettyXml(node);
+        console.log("Encoded XML", encodedXml);
+    }
+
+    const fnEncodeMxgraph = () => {
+        const model = graph.getDataModel();
+        const xml = new ModelXmlSerializer(model).export({
+            pretty: true
+        });
+        console.log("Hasil XML", xml);
     }
 
     const fnDecodeMxgraph = () => {
         // const model = new GraphDataModel();
         const model = graph.getDataModel();
-        graph.resizeContainer = true;
+        graph.resizeContainer = false;
         try {
             new ModelXmlSerializer(model).import(mxGraphModelAsXml);
             console.log("model mxgraph", model);
@@ -88,8 +97,13 @@ export const MaxGraphCodec: React.FC<MaxGraphCodecProps> = ({
     });
 
     return (
-        <div ref={divRef} className="h-[100vh] w-full">
+        <>
+            <div>
+                <button onClick={fnEncodeMxgraph}>Simpan</button>
+            </div>
+            <div ref={divRef} className="h-[100vh] w-full">
+            </div>
+        </>
 
-        </div>
     );
 }
