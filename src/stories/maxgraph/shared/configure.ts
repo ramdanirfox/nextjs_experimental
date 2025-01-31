@@ -31,7 +31,7 @@ export const createGraphContainer = (args: any) => {
   style.overflow = 'hidden';
   style.width = `${args.width}px`;
   style.height = `${args.height}px`;
-  style.background = 'url(./images/grid.gif)';
+  style.background = 'url(./maxgraph/images/grid.gif)';
   style.cursor = 'default';
   return container;
 };

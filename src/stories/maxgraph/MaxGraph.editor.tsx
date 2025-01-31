@@ -134,7 +134,8 @@ export const MaxGraphEditor: React.FC<MaxGraphEditorProps> = ({
 
         const connectionHandler = graph.getPlugin<ConnectionHandler>('ConnectionHandler');
         connectionHandler.connectImage = new ImageBox(
-            `${Client.imageBasePath}/connector.gif`,
+            `${""}maxgraph/images/connector.gif`,
+            // `${Client.imageBasePath}/maxgraph/connector.gif`,
             16,
             16
         );
@@ -226,6 +227,7 @@ export const MaxGraphEditor: React.FC<MaxGraphEditorProps> = ({
 
         const addVertex = (icon: string, w: number, h: number, style: CellStyle) => {
             addCell(true, icon, w, h, style);
+            // addCell(true, icon, w,h, {shape: "", })
         }
 
         const addToolbarLine = () => {
@@ -241,15 +243,15 @@ export const MaxGraphEditor: React.FC<MaxGraphEditorProps> = ({
         }
 
         addVertex('maxgraph/images/swimlane.gif', 120, 160, { shape: 'swimlane', startSize: 20 });
-        addVertex('images/rectangle.gif', 100, 40, {});
-        addVertex('images/rounded.gif', 100, 40, { rounded: true });
-        addVertex('images/ellipse.gif', 40, 40, { shape: 'ellipse' });
-        addVertex('images/rhombus.gif', 40, 40, { shape: 'rhombus' });
-        addVertex('images/triangle.gif', 40, 40, { shape: 'triangle' });
-        addVertex('images/cylinder.gif', 40, 40, { shape: 'cylinder' });
-        addVertex('images/actor.gif', 30, 40, { shape: 'actor' });
+        addVertex('maxgraph/images/rectangle.gif', 100, 40, {});
+        addVertex('maxgraph/images/rounded.gif', 100, 40, { rounded: true });
+        addVertex('maxgraph/images/ellipse.gif', 40, 40, { shape: 'ellipse' });
+        addVertex('maxgraph/images/rhombus.gif', 40, 40, { shape: 'rhombus' });
+        addVertex('maxgraph/images/triangle.gif', 40, 40, { shape: 'triangle' });
+        addVertex('maxgraph/images/cylinder.gif', 40, 40, { shape: 'cylinder' });
+        addVertex('maxgraph/images/actor.gif', 30, 40, { shape: 'actor' });
         addToolbarLine();
-        addEdge('images/entity.gif', 50, 50, {});
+        addEdge('maxgraph/images/entity.gif', 50, 50, {});
         addToolbarLine();
 
         const button = DomHelpers.button('Create toolbar entry from selection', (evt) => {
@@ -272,7 +274,7 @@ export const MaxGraphEditor: React.FC<MaxGraphEditorProps> = ({
                 };
 
                 // Creates the image which is used as the drag icon (preview)
-                const img = toolbar.addMode(null, 'images/outline.gif', funct, '');
+                const img = toolbar.addMode(null, 'maxgraph/images/outline.gif', funct, '');
                 gestureUtils.makeDraggable(img, graph, funct);
             }
         });
