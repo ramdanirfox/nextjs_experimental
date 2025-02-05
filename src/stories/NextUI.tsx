@@ -32,7 +32,7 @@ export default function FormTemplate({
 }: FormTemplateProps) {
   const [password, setPassword] = React.useState("");
   const [submitted, setSubmitted] = React.useState(null);
-  const [errors, setErrors] = React.useState({});
+  const [errors, setErrors] = React.useState({} as {terms?: string, name?: string});
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
   const [selectedColor, setSelectedColor] = React.useState("#0070f3");
 
@@ -77,7 +77,7 @@ export default function FormTemplate({
     }
 
     setErrors({});
-    setSubmitted(data);
+    setSubmitted(data as any);
   };
 
   return (
@@ -226,7 +226,7 @@ export default function FormTemplate({
           </Button>
           <Drawer isOpen={isOpen} placement={placementDrawer} onOpenChange={onOpenChange}>
             <DrawerContent>
-              {(onClose) => (
+              {(onClose: any) => (
                 <>
                   <DrawerHeader className="flex flex-col gap-1 border-y-1 border-black ">App</DrawerHeader>
                   <DrawerBody>
