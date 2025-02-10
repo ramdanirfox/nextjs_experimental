@@ -11,25 +11,24 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@ant-design/cssinjs": "^1.23.0",
     "@ant-design/nextjs-registry": "^1.0.2",
-=======
     "@enzedonline/quill-blot-formatter2": "^2.3.0",
->>>>>>> b0fdbae8175e4f750ff3aff09254306058e8c0c4
     "@heroui/drawer": "^2.2.7",
     "@maxgraph/core": "0.15.0",
     "@nextui-org/react": "^2.6.11",
     "@nextui-org/theme": "^2.4.5",
-<<<<<<< HEAD
+    "@react-google-maps/api": "^2.20.5",
+    "@turf/turf": "^7.2.0",
+    "@vis.gl/react-maplibre": "^8.0.1",
+    "ag-grid-community": "^33.0.4",
+    "ag-grid-react": "^33.0.4",
     "antd": "^5.23.3",
     "dayjs": "^1.11.13",
-=======
-    "ag-grid-react": "^23.1.1",
     "fast-xml-parser": "^4.5.1",
->>>>>>> b0fdbae8175e4f750ff3aff09254306058e8c0c4
     "framer-motion": "^11.18.0",
     "katex": "^0.16.21",
+    "maplibre-gl": "^5.1.0",
     "next": "14.2.14",
     "quill": "^2.0.3",
     "quill-better-table": "^1.2.10",
