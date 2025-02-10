@@ -16,11 +16,11 @@ const AntDesign: React.FC = () => {
     const [rangeType, setRangeType] = useState<"date" | "week" | "month" | "year">("week");
 
     const getDefaultDates = (type: string) => {
-        const now = dayjs("2025-02-03");
+        const now = dayjs();
 
 
         if (type === "date") {
-            return [now.subtract(8, "day"), now.subtract(1, "day")];
+            return [now.subtract(7, "day"), now.subtract(1, "day")];
         } else if (type === "month") {
             // untuk bulan sebelumnya dan 4 bulan sebelumnya
             return [
