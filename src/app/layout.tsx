@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 import {Providers} from "./providers";
 
+import { AntdRegistry } from "@ant-design/nextjs-registry"; 
+import "antd/dist/reset.css"; 
+
+
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
 //   subsets: ["latin"],
@@ -26,9 +30,9 @@ export default function RootLayout({
   return (
     <html lang="en" className='dark'>
       <body>
-        <Providers>
-          {children}
-        </Providers>
+        <AntdRegistry>
+          <Providers>{children}</Providers>
+        </AntdRegistry>
       </body>
     </html>
   );
