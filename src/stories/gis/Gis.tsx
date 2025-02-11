@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from "@react-google-maps/api";
 import { Map, Source, Layer, Popup } from "@vis.gl/react-maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { NavigationControl } from "@vis.gl/react-maplibre";
 
 const containerStyle = {
     width: "100%",
@@ -64,16 +65,23 @@ export const GisGoogleMap: React.FC = () => {
 // Komponen MapLibre dengan Marker & Popup
 export const GisMaplibre: React.FC = () => {
     const [popupInfo, setPopupInfo] = useState<{ longitude: number; latitude: number } | null>(null);
-
+    const handleZoom = (event) => {
+        if (event.viewState.zoom < 4) {
+            event.target.setZoom(4); 
+        }
+    };
     return (
         <Map
             initialViewState={{
                 longitude: center.lng,
                 latitude: center.lat,
                 zoom: 5,
+                bounds: [[95, -11], [141, 6]],
+                fitBoundsOptions: { padding: 10 }
             }}
             style={containerStyle}
             mapStyle="https://demotiles.maplibre.org/style.json"
+            onZoom={handleZoom}
             onClick={(e) => setPopupInfo({ longitude: e.lngLat.lng, latitude: e.lngLat.lat })}
         >
             <Source id="marker-source" type="geojson" data={geojson}>
@@ -88,6 +96,7 @@ export const GisMaplibre: React.FC = () => {
             )}
             </Source>
 
+            <NavigationControl position="bottom-right" showCompass={true} />
         </Map>
     );
 };

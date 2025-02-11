@@ -3,8 +3,11 @@ import { DatePicker, Space, Select, Typography } from "antd";
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import updateLocale from "dayjs/plugin/updateLocale";
 import "antd/dist/reset.css";
 
+dayjs.extend(updateLocale);
+dayjs.updateLocale("en", { weekStart: 5 }); // set week start to friday 
 dayjs.extend(isoWeek);
 dayjs.extend(customParseFormat);
 
@@ -30,7 +33,7 @@ const AntDesign: React.FC = () => {
         } else if (type === "week") {
             return [
                 now.startOf("isoWeek").subtract(4, "week"),
-                now.startOf("isoWeek").subtract(1, "week"),
+                now.endOf("isoWeek").subtract(1, "week"),
             ];
         } else if (type === "year") {
             // return [now.subtract(3, "year").startOf("year"), now.startOf("year")];
@@ -52,6 +55,14 @@ const AntDesign: React.FC = () => {
     };
 
     const handleDateChange = (dates: any) => {
+        // if (rangeType === "week" && dates) {
+        //     setSelectedDates([
+        //         dates[0].startOf("week"), 
+        //         dates[1].endOf("week")
+        //     ]);
+        // } else {
+        //     setSelectedDates(dates);
+        // }
         setSelectedDates(dates);
     };
 
@@ -62,9 +73,11 @@ const AntDesign: React.FC = () => {
         if (type === "year") return date.format("YYYY");
         return date.format("YYYY-MM-DD");
     };
+    const today = dayjs().format("YYYY-MM-DD") 
 
     return (
         <Space direction="vertical" size={12} align="center">
+            <h3>now : {today}</h3>
             <Space direction="horizontal" size={12} align="center">
                 <Select value={rangeType} onChange={handleRangeChange} style={{ width: 150 }}>
                     <Option value="date">Daily</Option>
