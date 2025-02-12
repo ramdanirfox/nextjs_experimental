@@ -5,6 +5,8 @@ import isoWeek from "dayjs/plugin/isoWeek";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import updateLocale from "dayjs/plugin/updateLocale";
 import "antd/dist/reset.css";
+import "./AntDesign.css"
+import { ConfigProvider } from "antd";
 
 dayjs.extend(updateLocale);
 dayjs.updateLocale("en", { weekStart: 5 }); // set week start to friday 
@@ -17,7 +19,6 @@ const { Text } = Typography;
 
 const AntDesign: React.FC = () => {
     const [rangeType, setRangeType] = useState<"date" | "week" | "month" | "year">("week");
-
     const getDefaultDates = (type: string) => {
         const now = dayjs();
 
@@ -27,8 +28,8 @@ const AntDesign: React.FC = () => {
         } else if (type === "month") {
             // untuk bulan sebelumnya dan 4 bulan sebelumnya
             return [
-                now.subtract(4, "month").startOf("month"), 
-                now.subtract(1, "month").startOf("month"),  
+                now.subtract(4, "month").startOf("month"),
+                now.subtract(1, "month").startOf("month"),
             ];
         } else if (type === "week") {
             return [
@@ -38,8 +39,8 @@ const AntDesign: React.FC = () => {
         } else if (type === "year") {
             // return [now.subtract(3, "year").startOf("year"), now.startOf("year")];
             return [
-                now.subtract(4, "year").startOf("year"), 
-                now.subtract(1, "year").startOf("year"),  
+                now.subtract(4, "year").startOf("year"),
+                now.subtract(1, "year").startOf("year"),
             ];
         }
         return [now, now];
@@ -68,46 +69,83 @@ const AntDesign: React.FC = () => {
 
     const formatValue = (date: dayjs.Dayjs, type: string) => {
         if (!date) return "";
-        if (type === "week") return date.format("YYYY-[w]WW");
+        if (type === "week") return date.startOf("isoWeek").format("YYYY-[W]WW"); // Perbaikan
         if (type === "month") return date.format("YYYY-MM");
         if (type === "year") return date.format("YYYY");
         return date.format("YYYY-MM-DD");
     };
-    const today = dayjs().format("YYYY-MM-DD") 
+    
+    const today = dayjs().format("YYYY-MM-DD")
+    // const renderCell = (current: dayjs.Dayjs, info: any) => {
+    //     // Gunakan tampilan default jika bukan "date" atau "week"
+    //     if (rangeType !== "date" && rangeType !== "week") {
+    //         return info.originNode;
+    //     }
+
+    //     // initial Minggu
+    //     const isSunday = current.day() === 0;
+
+    //     return (
+    //         <div
+    //             className="ant-picker-cell-inner"
+    //             style={{
+    //                 backgroundColor: isSunday? "#FF0000" : undefined,
+    //                 color: isSunday ? "#FFFFFF" : undefined,
+    //                 fontWeight: isSunday ? "bold" : undefined,
+    //             }}
+    //         >
+    //             {current.date()}
+    //         </div>
+    //     );
+    // };
+
+    const renderCell = (current: dayjs.Dayjs, info: any) => {
+        const isSunday = current.day() === 0;
+    
+        if (isSunday) {
+            return <div className="custom-sunday" >{current.date()}</div>;
+        }
+    
+        return info.originNode;
+    };
+
 
     return (
-        <Space direction="vertical" size={12} align="center">
-            <h3>now : {today}</h3>
-            <Space direction="horizontal" size={12} align="center">
-                <Select value={rangeType} onChange={handleRangeChange} style={{ width: 150 }}>
-                    <Option value="date">Daily</Option>
-                    <Option value="week">Weekly</Option>
-                    <Option value="month">Monthly</Option>
-                    <Option value="year">Yearly</Option>
-                </Select>
+        <ConfigProvider>
+            <Space direction="vertical" size={12} align="center">
+                <h3>now : {today}</h3>
+                <Space direction="horizontal" size={12} align="center">
+                    <Select value={rangeType} onChange={handleRangeChange} style={{ width: 150 }}>
+                        <Option value="date">Daily</Option>
+                        <Option value="week">Weekly</Option>
+                        <Option value="month">Monthly</Option>
+                        <Option value="year">Yearly</Option>
+                    </Select>
 
-                <RangePicker
-                    onChange={handleDateChange}
-                    picker={rangeType}
-                    value={selectedDates}
-                    format={
-                        rangeType === "week"
-                            ? "YYYY-[w]WW"
-                            : rangeType === "month"
-                                ? "YYYY-MM"
-                                : rangeType === "year"
-                                    ? "YYYY"
-                                    : "YYYY-MM-DD"
-                    }
-                />
+                    <RangePicker
+                        cellRender={renderCell}
+                        onChange={handleDateChange}
+                        picker={rangeType}
+                        value={selectedDates}
+                        format={
+                            rangeType === "week"
+                                ? "YYYY-[w]WW"
+                                : rangeType === "month"
+                                    ? "YYYY-MM"
+                                    : rangeType === "year"
+                                        ? "YYYY"
+                                        : "YYYY-MM-DD"
+                        }
+                    />
+                </Space>
+
+                {selectedDates && (
+                    <Text strong>
+                        Output: {formatValue(selectedDates[0], rangeType)} - {formatValue(selectedDates[1], rangeType)}
+                    </Text>
+                )}
             </Space>
-
-            {selectedDates && (
-                <Text strong>
-                    Output: {formatValue(selectedDates[0], rangeType)} - {formatValue(selectedDates[1], rangeType)}
-                </Text>
-            )}
-        </Space>
+        </ConfigProvider>
     );
 };
 
