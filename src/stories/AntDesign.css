@@ -4,12 +4,11 @@
 } */
 
 .custom-sunday {
-    background-color: rgb(255, 0, 0) !important;
+    background-color: #ef6666 !important;
     color: white !important;
     position: sticky;
     z-index: 50;
     font-weight: bold;
-    border-radius: 4px;
     width: 100%;
     height: 100%;
     display: flex;
