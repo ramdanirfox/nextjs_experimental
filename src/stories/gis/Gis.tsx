@@ -117,7 +117,7 @@ const geojson = {
         properties: {
             name: loc.name,
             class: loc.class,
-            label: getLabel(loc.class) // Menambahkan label berdasarkan class
+            label: getLabel(loc.class),
         },
         geometry: {
             type: "Point",
@@ -126,15 +126,55 @@ const geojson = {
     })),
 };
 
+const loadMapIcons = (map) => {
+    legendItems.forEach(item => {
+      const img = new Image();
+      img.src = item.icon;
+      img.onload = () => {
+        map.addImage(item.name.toUpperCase(), img);
+      };
+    });
+  };
 
-const markerStyle = {
+  const markerStyle = {
     id: "marker",
-    type: "circle",
-    paint: {
-        "circle-radius": 5,
-        "circle-color": "#FF0000",
+    type: "symbol",
+    layout: {
+        "icon-image": ["get", "class"],
+        "icon-size": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            0, 0.26,
+            22, 0.26
+        ],
+        "icon-allow-overlap": true,
+        // Mengubah anchor point ke center agar posisi lebih presisi
+        "icon-anchor": "center",
+        "icon-pitch-alignment": "viewport",
+        "icon-rotation-alignment": "viewport",
+        "icon-ignore-placement": true,
+        // Menambahkan text-field untuk menampilkan koordinat
+        "text-field": [
+            "concat",
+            ["to-string", ["get", "label"]],
+            "\n",
+            ["number-format", ["get", "latitude"], { "maximumFractionDigits": 6 }],
+            ", ",
+            ["number-format", ["get", "longitude"], { "maximumFractionDigits": 6 }]
+        ],
+        "text-anchor": "top",
+        "text-offset": [0, 1], // Menggeser text ke bawah icon
+        "text-size": 12,
+        "text-allow-overlap": true
     },
+    paint: {
+        "text-color": "#000000",
+        "text-halo-color": "#ffffff",
+        "text-halo-width": 2
+    }
 };
+
 
 const labelStyle = {
     id: "marker-label",
@@ -142,7 +182,7 @@ const labelStyle = {
     layout: {
         "text-field": ["get", "label"], // Ambil label dari properti geojson
         "text-size": 12,
-        "text-offset": [0, 1.5], // Geser sedikit ke atas
+        "text-offset": [0, 0.6], // Geser sedikit ke atas
         "text-anchor": "top",
     },
     paint: {
@@ -156,7 +196,7 @@ const labelStyle = {
 export const GisGoogleMap: React.FC = () => {
     const { isLoaded } = useJsApiLoader({
         id: "google-map-script",
-        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string, // Pastikan API key ada di .env.local
+        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
     });
 
     const mapRef = useRef<google.maps.Map | null>(null);
@@ -165,49 +205,79 @@ export const GisGoogleMap: React.FC = () => {
         "EXECUTIVE", "PREMIUM", "REGULAR", "BASIC", "ECONOMY"
     ]);
 
+    // Fungsi untuk mendapatkan URL icon berdasarkan class
+    const getIconUrl = (className: string): string => {
+        const icon = legendItems.find(item => item.name.toUpperCase() === className.toUpperCase());
+        return icon ? icon.icon : '';
+    };
+
+    const customMarkerOptions = (location: typeof locations[0]): google.maps.MarkerOptions => {
+        return {
+            position: { lat: location.latitude, lng: location.longitude },
+            icon: {
+                url: getIconUrl(location.class),
+                scaledSize: new google.maps.Size(20, 20), // Ukuran icon
+                anchor: new google.maps.Point(12, 12), // Titik tengah icon
+            },
+            title: location.name // Akan muncul saat hover
+        };
+    };
+
     const toggleCategory = (category: string) => {
         setVisibleCategories(prev =>
             prev.includes(category) ? prev.filter(c => c !== category) : [...prev, category]
         );
     };
-    const [infoOpen, setInfoOpen] = useState(false);
 
     const onLoad = (map: google.maps.Map) => {
         mapRef.current = map;
 
         const bounds = new google.maps.LatLngBounds();
-        bounds.extend({ lat: 6.5, lng: 95.0 });  // Barat Laut (Aceh)
-        bounds.extend({ lat: -11.0, lng: 141.0 }); // Tenggara (Papua)
+        bounds.extend({ lat: 6.5, lng: 95.0 });
+        bounds.extend({ lat: -11.0, lng: 141.0 });
         map.fitBounds(bounds);
     };
 
     return isLoaded ? (
         <div style={{ position: "relative" }}>
-            <GoogleMap mapContainerStyle={containerStyle} onLoad={onLoad}>
+            <GoogleMap 
+                mapContainerStyle={containerStyle} 
+                onLoad={onLoad}
+                options={{
+                    styles: [
+                        {
+                            featureType: "poi",
+                            elementType: "labels",
+                            stylers: [{ visibility: "off" }]
+                        }
+                    ]
+                }}
+            >
                 {locations
                     .filter(loc => visibleCategories.includes(loc.class))
                     .map((location, index) => (
                         <Marker
                             key={index}
-                            position={{ lat: location.latitude, lng: location.longitude }}
+                            {...customMarkerOptions(location)}
                             onClick={() => setSelectedLocation(location)}
-                            label={{
-                                text: getLabel(location.class),
-                                color: "#ffffff",
-                                fontSize: "12px",
-                                fontWeight: "bold",
-                            }}
                         />
                     ))}
-                {/* <Marker position={center} onClick={() => setInfoOpen(true)} />
-                {infoOpen && (
-                    <InfoWindow position={center} onCloseClick={() => setInfoOpen(false)}>
+                
+                {selectedLocation && (
+                    <InfoWindow
+                        position={{
+                            lat: selectedLocation.latitude,
+                            lng: selectedLocation.longitude
+                        }}
+                        onCloseClick={() => setSelectedLocation(null)}
+                    >
                         <div>
-                            <h4>Braincode</h4>
-                            <p>Koordinat: {`${center.lat}, ${center.lng}`}</p>
+                            <h4>{selectedLocation.name}</h4>
+                            <p>Class: {selectedLocation.class}</p>
+                            <p>Koordinat: {selectedLocation.latitude}, {selectedLocation.longitude}</p>
                         </div>
                     </InfoWindow>
-                )} */}
+                )}
             </GoogleMap>
             <Legend onToggle={toggleCategory} visibleCategories={visibleCategories} />
         </div>
@@ -225,6 +295,9 @@ export const GisMaplibre: React.FC = () => {
             prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
         );
     };
+    const visibleLocations = locations.filter(loc => 
+        visibleCategories.includes(loc.class)
+    );
 
     const filteredGeojson = {
         ...geojson,
@@ -232,9 +305,14 @@ export const GisMaplibre: React.FC = () => {
             visibleCategories.includes(feature.properties.class.toUpperCase())
         ),
     };
+    const handleMapLoad = (event) => {
+        loadMapIcons(event.target);
+    };
 
     return (
         <Map
+            minZoom={4} 
+            onLoad={handleMapLoad}
             initialViewState={{
                 // longitude: center.lng,
                 // latitude: center.lat,
@@ -247,7 +325,7 @@ export const GisMaplibre: React.FC = () => {
         >
             <Source id="marker-source" type="geojson" data={filteredGeojson}>
                 <Layer {...markerStyle} />
-                <Layer {...labelStyle} />
+                {/* <Layer {...labelStyle} /> */}
             </Source>
 
             <NavigationControl position="bottom-right" showCompass={true} />
