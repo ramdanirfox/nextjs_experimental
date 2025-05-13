@@ -7,6 +7,7 @@ import "./../../../node_modules/quill-better-table/dist/quill-better-table.css"
 import Quill from 'quill';
 import katex from 'katex';
 import BlotFormatter2 from '@enzedonline/quill-blot-formatter2';
+import { it } from 'node:test';
 
 type User = {
   name: string;
@@ -69,15 +70,34 @@ export const QuillWysiwig: React.FC<QuillWysiwigProps> = ({
       // debug: 'info' as any,
       modules: {
         'better-table': {
+          // operationMenu: {
+          //   items: {
+          //     unmergeCells: {
+          //       text: 'Another unmerge cells name'
+          //     }
+          //   },
+          //   color: {
+          //     colors: ['#fff', 'red', 'rgb(0, 0, 0)'],  // colors you need in operationMenu, ['white', 'red', 'yellow', 'blue'] as default
+          //     text: 'Warna Latar'  // subtitle, 'Background Colors' as default
+          //   }
+          // },
           operationMenu: {
             items: {
-              unmergeCells: {
-                text: 'Another unmerge cells name'
-              }
+              unmergeCells: false,
+              insertColumnRight: false,
+              insertColumnLeft: false,
+              insertRowUp: false,
+              insertRowDown: false,
+              deleteColumn: false,
+              deleteRow: false,
+              deleteTable: false,
+              mergeCells: false,
+              mergeRows: false,
+              mergeColumns: false
             },
             color: {
-              colors: ['#fff', 'red', 'rgb(0, 0, 0)'],  // colors you need in operationMenu, ['white', 'red', 'yellow', 'blue'] as default
-              text: 'Warna Latar'  // subtitle, 'Background Colors' as default
+              colors: ['#fff', '#AAA', '#555', '#000'],
+              text: 'Right click again show options'
             }
           }
         },
@@ -107,7 +127,7 @@ export const QuillWysiwig: React.FC<QuillWysiwigProps> = ({
           }
         }
       },
-      readOnly: false,
+      readOnly: true,
       placeholder: 'Tulis disini...',
       theme: 'snow'
     };
