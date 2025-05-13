@@ -24,10 +24,10 @@ export const PasswordStrength: React.FC<PasswordStrengthProps> = ({
 
     const customOptions: [FirstOption<any>, ...Option<any>[]] = [
         { id: 0, value: 'Very Weak', minDiversity: 0, minLength: 0 },
-        { id: 1, value: 'Weak', minDiversity: 1, minLength: 6 },
-        { id: 2, value: 'Okay', minDiversity: 3, minLength: 8 },
-        { id: 3, value: 'Good', minDiversity: 4, minLength: 10 },
-        { id: 4, value: 'Excellent', minDiversity: 4, minLength: 14 },
+        { id: 1, value: 'Weak', minDiversity: 1, minLength: 2 },
+        { id: 2, value: 'Okay', minDiversity: 3, minLength: 4 },
+        { id: 3, value: 'Good', minDiversity: 4, minLength: 6 },
+        { id: 4, value: 'Excellent', minDiversity: 4, minLength: 8 },
     ];
 
     const owaspSymbols = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";

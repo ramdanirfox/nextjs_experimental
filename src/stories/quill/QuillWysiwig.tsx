@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRef } from 'react';
 import "./../../../node_modules/quill/dist/quill.snow.css";
 import "./../../../node_modules/quill/dist/quill.bubble.css";
@@ -24,6 +24,7 @@ export const QuillWysiwig: React.FC<QuillWysiwigProps> = ({
   ...props
 }: QuillWysiwigProps) => {
   const myRef = useRef<HTMLElement>();
+  const [quillDelta, setQuillDelta] = useState<any>({});
   let quillRef: Quill;
   useEffect(() => {
     // console.log("Access katex", katex);
@@ -37,10 +38,10 @@ export const QuillWysiwig: React.FC<QuillWysiwigProps> = ({
       }, true);
       console.log("Better table?", QuillBetterTable);
       fnQuillFormatsRegistered();
-    })
-
-
-  });
+      fnQuillSetInitialContent();
+      fnQuillRegisterListener();
+    });
+  }, []);
 
   const fnQuillFormatsRegistered = () => {
     const toolbarModules = [
@@ -65,7 +66,7 @@ export const QuillWysiwig: React.FC<QuillWysiwigProps> = ({
     ];
 
     const options = {
-      debug: 'info' as any,
+      // debug: 'info' as any,
       modules: {
         'better-table': {
           operationMenu: {
@@ -77,7 +78,7 @@ export const QuillWysiwig: React.FC<QuillWysiwigProps> = ({
             color: {
               colors: ['#fff', 'red', 'rgb(0, 0, 0)'],  // colors you need in operationMenu, ['white', 'red', 'yellow', 'blue'] as default
               text: 'Warna Latar'  // subtitle, 'Background Colors' as default
-            }             
+            }
           }
         },
         // keyboard: {
@@ -114,6 +115,260 @@ export const QuillWysiwig: React.FC<QuillWysiwigProps> = ({
     quillRef = new Quill(myRef.current!, options);
   }
 
+  const fnQuillSetInitialContent = () => {
+    if (!quillRef) {
+      console.log("[ERROR] quillRef not registered yet");
+      return;
+    }
+    quillRef.setContents(
+      {
+        "ops": [
+          {
+            "attributes": {
+              "size": "large",
+              "bold": true
+            },
+            "insert": "Te"
+          },
+          {
+            "attributes": {
+              "size": "large",
+              "color": "#b2b200",
+              "bold": true
+            },
+            "insert": "nmmz "
+          },
+          {
+            "attributes": {
+              "size": "large",
+              "color": "#b2b200",
+              "background": "#f06666",
+              "bold": true
+            },
+            "insert": "jj"
+          },
+          {
+            "attributes": {
+              "header": 2
+            },
+            "insert": "\n"
+          },
+          {
+            "attributes": {
+              "table-col": {
+                "width": "100"
+              }
+            },
+            "insert": "\n\n\n"
+          },
+          {
+            "attributes": {
+              "table-col": {
+                "width": "255"
+              }
+            },
+            "insert": "\n"
+          },
+          {
+            "insert": "aaa"
+          },
+          {
+            "attributes": {
+              "table-cell-line": {
+                "rowspan": "1",
+                "colspan": "1",
+                "row": "row-0o4l",
+                "cell": "cell-hddq"
+              },
+              "row": "row-0o4l",
+              "rowspan": "1",
+              "colspan": "1"
+            },
+            "insert": "\n"
+          },
+          {
+            "insert": "bbb"
+          },
+          {
+            "attributes": {
+              "table-cell-line": {
+                "rowspan": "1",
+                "colspan": "1",
+                "row": "row-0o4l",
+                "cell": "cell-aqvc"
+              },
+              "row": "row-0o4l",
+              "rowspan": "1",
+              "colspan": "1"
+            },
+            "insert": "\n"
+          },
+          {
+            "insert": "ccc"
+          },
+          {
+            "attributes": {
+              "table-cell-line": {
+                "rowspan": "1",
+                "colspan": "1",
+                "row": "row-0o4l",
+                "cell": "cell-pfok"
+              },
+              "row": "row-0o4l",
+              "rowspan": "1",
+              "colspan": "1"
+            },
+            "insert": "\n"
+          },
+          {
+            "attributes": {
+              "table-cell-line": {
+                "rowspan": "1",
+                "colspan": "1",
+                "row": "row-0o4l",
+                "cell": "cell-abhc"
+              },
+              "row": "row-0o4l",
+              "rowspan": "1",
+              "colspan": "1"
+            },
+            "insert": "\n"
+          },
+          {
+            "attributes": {
+              "table-cell-line": {
+                "rowspan": "1",
+                "colspan": "1",
+                "row": "row-vor2",
+                "cell": "cell-1eqf"
+              },
+              "row": "row-vor2",
+              "rowspan": "1",
+              "colspan": "1"
+            },
+            "insert": "\n"
+          },
+          {
+            "attributes": {
+              "align": "right",
+              "direction": "rtl",
+              "table-cell-line": {
+                "rowspan": "1",
+                "colspan": "1",
+                "row": "row-vor2",
+                "cell": "cell-3kob"
+              },
+              "row": "row-vor2",
+              "rowspan": "1",
+              "colspan": "1"
+            },
+            "insert": "\n"
+          },
+          {
+            "attributes": {
+              "table-cell-line": {
+                "rowspan": "1",
+                "colspan": "1",
+                "row": "row-vor2",
+                "cell": "cell-kiml"
+              },
+              "row": "row-vor2",
+              "rowspan": "1",
+              "colspan": "1"
+            },
+            "insert": "\n"
+          },
+          {
+            "attributes": {
+              "table-cell-line": {
+                "rowspan": "1",
+                "colspan": "1",
+                "row": "row-vor2",
+                "cell": "cell-wktv"
+              },
+              "row": "row-vor2",
+              "rowspan": "1",
+              "colspan": "1"
+            },
+            "insert": "\n"
+          },
+          {
+            "attributes": {
+              "table-cell-line": {
+                "rowspan": "1",
+                "colspan": "1",
+                "row": "row-a4ng",
+                "cell": "cell-7hf6"
+              },
+              "row": "row-a4ng",
+              "rowspan": "1",
+              "colspan": "1"
+            },
+            "insert": "\n"
+          },
+          {
+            "attributes": {
+              "table-cell-line": {
+                "rowspan": "1",
+                "colspan": "1",
+                "row": "row-a4ng",
+                "cell": "cell-8ukn"
+              },
+              "row": "row-a4ng",
+              "rowspan": "1",
+              "colspan": "1"
+            },
+            "insert": "\n"
+          },
+          {
+            "attributes": {
+              "table-cell-line": {
+                "rowspan": "1",
+                "colspan": "1",
+                "row": "row-a4ng",
+                "cell": "cell-o14b"
+              },
+              "row": "row-a4ng",
+              "rowspan": "1",
+              "colspan": "1"
+            },
+            "insert": "\n"
+          },
+          {
+            "attributes": {
+              "table-cell-line": {
+                "rowspan": "1",
+                "colspan": "1",
+                "row": "row-a4ng",
+                "cell": "cell-096f"
+              },
+              "row": "row-a4ng",
+              "rowspan": "1",
+              "colspan": "1"
+            },
+            "insert": "\n"
+          },
+          {
+            "insert": "\n"
+          }
+        ]
+      } as any,
+      'api'
+    );
+  }
+
+  const fnQuillRegisterListener = () => {
+    if (!quillRef) {
+      console.log("[ERROR] quillRef not registered yet");
+      return;
+    }
+    quillRef.on('text-change', (delta, oldDelta, source) => {
+      // console.log('text-change', delta, oldDelta, source);
+      console.log('text-change', quillRef.getContents());
+      // setQuillDelta({delta, oldDelta, source});
+    })
+  }
+
   const fnTambahTabel = () => {
     let tableModule = quillRef.getModule('better-table');
     (tableModule as unknown as any).insertTable(3, 3);
@@ -128,6 +383,7 @@ export const QuillWysiwig: React.FC<QuillWysiwigProps> = ({
       <div ref={myRef as any} className="h-[100vh] w-[100vh]">
         Tes
       </div>
+      delta: {JSON.stringify(quillDelta)}
     </>
   );
 };
